@@ -3,18 +3,16 @@
 void UserInput::readFieldSize() {
 	long long int width, height;
 	while(true) {
-		std::cout << "Height = ";
-		std::cin >> width;
-		std::cout << "Width = ";
-		std::cin >> height;
+		std::cout << "Enter field width and height: ";
+		std::cin >> width >> height;
 		if (width >= 3 && height >= 3) {
+			this->field_size = {height, width};
 			break;
 		}
 		std::cout << "Incorrect data. Try again!" << std::endl;
 	}
-	this->field_size = {width, height};
 }
 
-std::pair<size_t, size_t> UserInput::getFieldSize() {
-	return this->field_size;
+const std::pair<size_t, size_t>& UserInput::getFieldSize() {
+	return field_size;
 }

@@ -10,7 +10,7 @@ private:
 	std::pair<size_t, size_t> field_size;
 public:
 	void readFieldSize();
-	std::pair<size_t, size_t> getFieldSize();
+	const std::pair<size_t, size_t>& getFieldSize();
 };
 
 #endif

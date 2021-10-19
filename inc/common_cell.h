@@ -1,12 +1,12 @@
 #ifndef COMMON_CELL_H
 #define COMMON_CELL_H
 
-#include "icell.h"
+#include "cell.h"
 
-class CommonCell: public ICell {
-	void getItem() const;
-	Prototype* clone() const;
+class CommonCell: public Cell {
+public:
 	const sf::Texture& getTexture() const;
+	Prototype* clone() const;
 };
 
 #endif

@@ -1,12 +1,12 @@
 #ifndef WALL_CELL_H
 #define WALL_CELL_H
 
-#include "icell.h"
+#include "cell.h"
 
-class WallCell: public ICell {
-	void getItem() const;
-	Prototype* clone() const;
+class WallCell: public Cell {
+public:
 	const sf::Texture& getTexture() const;
+	Prototype* clone() const;
 };
 
 #endif

@@ -1,12 +1,12 @@
 #include "start_cell.h"
 
-void StartCell:: getItem() const {};
-
-Prototype* StartCell:: clone() const {
-	return new StartCell(*this);
-}
-
 const sf::Texture& StartCell::getTexture() const {
 	Textures &t = Textures::getInstance();
 	return t.getTexture("start.png");
+}
+
+Prototype* StartCell::clone() const {
+	StartCell* new_cell = new StartCell();
+	new_cell->setObject(dynamic_cast<GameObject*>(this->game_object->clone()));
+	return new_cell;
 }

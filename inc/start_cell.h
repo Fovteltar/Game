@@ -1,11 +1,11 @@
 #ifndef START_CELL_H
 #define START_CELL_H
 
-#include "icell.h"
+#include "cell.h"
 
-class StartCell: public ICell {
-	void getItem() const;
-	Prototype* clone() const;
+class StartCell: public Cell {
+public:
 	const sf::Texture& getTexture() const;
+	Prototype* clone() const;
 };
 #endif

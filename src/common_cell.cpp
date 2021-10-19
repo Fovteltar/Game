@@ -1,12 +1,12 @@
 #include "common_cell.h"
 
-void CommonCell:: getItem() const {};
-
-Prototype* CommonCell:: clone() const {
-	return new CommonCell(*this);
-};
-
 const sf::Texture& CommonCell::getTexture() const {
 	Textures &t = Textures::getInstance();
 	return t.getTexture("ground.png");
+}
+
+Prototype* CommonCell::clone() const {
+	CommonCell* new_cell = new CommonCell();
+	new_cell->setObject(dynamic_cast<GameObject*>(this->game_object->clone()));
+	return new_cell;
 }

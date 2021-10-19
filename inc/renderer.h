@@ -2,16 +2,18 @@
 #define RENDERER_H
 
 #include "textures.h"
-#include "game_field.h"
 #include <thread>
 #include <chrono>
+#include "game.h"
 
 class Renderer {
 private:
-	GameField& game_field;
+	sf::RenderWindow* window;
 public:
-	Renderer(GameField& game_field);
-	void startRender() const;
+	Renderer();
+	~Renderer();
+	sf::RenderWindow& getWindow();
+	void drawFrame();
 };
 
 #endif

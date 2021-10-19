@@ -1,19 +1,15 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
-#include "game_field.h"
-#include "user_input.h"
-#include "game_field_director.h"
-#include "game_field_builder.h"
-#include "renderer.h"
+#include <SFML/Graphics.hpp>
+#include "texture_getter.h"
+#include "prototype.h"
 
-class GameObject {
-private:
-	GameField* game_field;
+class GameObject: public TextureGetter, public sf::Drawable, public Prototype {
 public:
-	GameObject();
-	~GameObject();
-	void startGame();
+	virtual const sf::Texture& getTexture() const = 0;
+	virtual Prototype* clone() const = 0;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 };
 
 #endif

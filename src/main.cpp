@@ -1,8 +1,7 @@
-#include "game_object.h"
+#include "game.h"
 
 int main() {
-	GameObject* game_object = new GameObject();
-	game_object->startGame();
-	delete game_object;
+	Game& game = game.getInstance();
+    game.startGame();
 	return 0;
 }
