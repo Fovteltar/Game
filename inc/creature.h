@@ -8,7 +8,7 @@
 class Creature: public GameObject {
 protected:
 	size_t health;
-	size_t armor; //in percentage (hold it from 0 to 100)
+	size_t armor; //in percentage (store it from 0 to 100)
 	size_t attack;
 	CreatureMoveManager* move_manager;
 public:

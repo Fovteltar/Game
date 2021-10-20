@@ -66,9 +66,11 @@ void GameField::setCell(Cell* new_cell, const std::pair<size_t, size_t>& cell_co
 
 void GameField::changeObjectCoords(const std::pair<size_t, size_t>& old_coords,
 	const std::pair<size_t, size_t>& new_coords) {
-	field[new_coords.first][new_coords.second]->setObject(
-		&field[old_coords.first][old_coords.second]->getObject());
-	field[old_coords.first][old_coords.second]->setObject(nullptr);
+	if (old_coords != new_coords) {
+		field[new_coords.first][new_coords.second]->setObject(
+			&field[old_coords.first][old_coords.second]->getObject());
+		field[old_coords.first][old_coords.second]->setObject(nullptr);
+	}
 }
 
 void GameField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
