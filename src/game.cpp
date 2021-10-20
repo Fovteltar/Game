@@ -35,9 +35,9 @@ void Game::create() {
 
 	this->game_field = gf_builder.getGameField();
 
-	PlayerSpawner p_spawner = PlayerSpawner();
-	EnemiesSpawner en_spawner = EnemiesSpawner();
-    ItemsSpawner it_spawner = ItemsSpawner();
+	PlayerSpawner p_spawner = PlayerSpawner(*game_field);
+	EnemiesSpawner en_spawner = EnemiesSpawner(*game_field);
+    ItemsSpawner it_spawner = ItemsSpawner(*game_field);
 	Spawner* spawner = dynamic_cast<Spawner*>(&p_spawner);
 	spawner->spawn();
 	spawner = dynamic_cast<Spawner*>(&en_spawner);
@@ -49,7 +49,7 @@ void Game::create() {
 void Game::startGame() {
 	Game::getInstance().create();
 	Renderer renderer;
-	EventManager ev_manager;
+	EventManager ev_manager(*game_field, *player);
     sf::RenderWindow& window = renderer.getWindow();
 	while (window.isOpen()) {
         renderer.drawFrame();
@@ -139,8 +139,4 @@ void Game::startGame() {
 
 void Game::setEnd() {
 	this->not_ended = false;
-}
-
-bool Game::getGameState() const {
-	return not_ended;
 }

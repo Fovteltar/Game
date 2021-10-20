@@ -7,6 +7,7 @@
 class PlayerSpawner: public Spawner {
 public:
 	void spawn() const;
+	PlayerSpawner(GameField& game_field);
 };
 
 #endif

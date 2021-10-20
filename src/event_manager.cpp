@@ -3,19 +3,36 @@
 
 void EventManager::pickUp(Player& player, Item& item) {
     const std::pair<size_t, size_t>& obj_coords = item.getCoords();
-    GameField& game_field = Game::getInstance().getGameField();
     if (dynamic_cast<Potion*>(&item) != nullptr) {
         if (dynamic_cast<HealingPotion*>(&item) != nullptr) {
-            player.changeHealth(dynamic_cast<HealingPotion&>(item).getEffect());
-            std::cout << "playerHp " << player.getHealth() << std::endl; 
+            const size_t& player_hp = 
+              player.getHealth();
+            const size_t& player_hp_dif = 
+              dynamic_cast<HealingPotion&>(item).getEffect(); 
+            std::cout << "PLAYER: HEAL(" << player_hp << 
+              " + " << player_hp_dif << " -> " <<
+              (player_hp + player_hp_dif) << ")" << std::endl;
+            player.changeHealth(player_hp_dif);
         }
         else if (dynamic_cast<RagePotion*>(&item) != nullptr) {
-            player.changeAttack(dynamic_cast<RagePotion&>(item).getEffect());
-            std::cout << "playerAttack " << player.getAttack() << std::endl; 
+            const size_t& player_att = 
+              player.getAttack();
+            const size_t& player_att_dif = 
+             dynamic_cast<RagePotion&>(item).getEffect();
+            std::cout << "PLAYER: ATTACK INCREASED(" << player_att << 
+              " + " << player_att_dif << " -> " <<
+              (player_att + player_att_dif) << ")" << std::endl;
+              player.changeAttack(player_att_dif);
         }
         else if (dynamic_cast<IronskinPotion*>(&item) != nullptr) {
-            player.changeArmor(dynamic_cast<IronskinPotion&>(item).getEffect());
-            std::cout << "playerDefence " << player.getArmor() << "%" << std::endl; 
+            const size_t& player_def = 
+              player.getArmor();
+            const size_t& player_def_dif = 
+             dynamic_cast<IronskinPotion&>(item).getEffect();
+            std::cout << "PLAYER: DEF INCREASED(" << player_def << 
+              " + " << player_def_dif << " -> " <<
+              (player_def + player_def_dif) << "%)" << std::endl;
+              player.changeArmor(player_def_dif);
         }
         game_field.getCell(obj_coords).setObject(nullptr);
         delete &item;
@@ -31,7 +48,7 @@ void EventManager::attack(Creature& attacker, Creature& defender) {
     unsigned int hp_dif_defender = (unsigned int) (attacker_attack * (1 - (double)defender_armor / 100));
     std::cout << "ATTACKED: " << defender_hp << " - " << hp_dif_defender << " = ";
     if (hp_dif_defender >= defender_hp) {
-        Game::getInstance().getGameField().getCell(
+        game_field.getCell(
             defender.getMoveManager().getCoords()).setObject(nullptr);
         if (dynamic_cast<Player*>(&defender) != nullptr) {
             Game::getInstance().setEnd();
@@ -48,7 +65,6 @@ void EventManager::attack(Creature& attacker, Creature& defender) {
 }
 
 void EventManager::enemiesMove() {
-    GameField& game_field = Game::getInstance().getGameField();
     const std::pair<size_t, size_t> field_size = game_field.getFieldSize();
     for (size_t x = 0; x < field_size.first; x++) {
         for (size_t y = 0; y < field_size.second; y++) {
@@ -94,7 +110,7 @@ void EventManager::move(Enemy& enemy) {
              checkNotItem(enemy, difference)) {
                 can_move = false;
                 if (!checkNotPlayer(enemy, difference)) {
-                    attack(enemy, Game::getInstance().getPlayer());
+                    attack(enemy, player);
                 }
                 else {
                     enemy.getMoveManager().setIsMoved(true);
@@ -106,7 +122,6 @@ void EventManager::move(Enemy& enemy) {
 }
 
 void EventManager::move(Player& player, const std::pair<char, char>& difference) {
-    GameField& game_field = Game::getInstance().getGameField();
     if (checkMoveInField(player, difference)) {
         if (checkNotWall(player, difference)) {
             const std::pair<size_t, size_t>& player_coords = player.getMoveManager().getCoords();
@@ -128,7 +143,7 @@ void EventManager::move(Player& player, const std::pair<char, char>& difference)
 
 bool EventManager::checkMoveInField(Creature& creature, const std::pair<char, char>& difference) const{
     const std::pair<size_t, size_t>& coords = creature.getMoveManager().getCoords();
-    const std::pair<size_t, size_t>& field_size = Game::getInstance().getGameField().getFieldSize();
+    const std::pair<size_t, size_t>& field_size = game_field.getFieldSize();
     if (((difference.first <= 0 && coords.first >= std::abs(difference.first)) || 
         (difference.first > 0 && coords.first + difference.first < field_size.first)) &&
         ((difference.second <= 0 && coords.second >= std::abs(difference.second)) || 
@@ -142,7 +157,7 @@ bool EventManager::checkMoveInField(Creature& creature, const std::pair<char, ch
 
 bool EventManager::checkNotWall(Creature& creature, const std::pair<char, char>& difference) const{
     const std::pair<size_t, size_t>& coords = creature.getMoveManager().getCoords();
-    if (dynamic_cast<WallCell*>(&Game::getInstance().getGameField().getCell(
+    if (dynamic_cast<WallCell*>(&game_field.getCell(
        std::make_pair(coords.first + difference.first, coords.second + difference.second)))
         == nullptr) {
        return true;
@@ -152,7 +167,7 @@ bool EventManager::checkNotWall(Creature& creature, const std::pair<char, char>&
 
 bool EventManager::checkNotPlayer(Enemy& enemy, const std::pair<char, char>& difference) const {
     const std::pair<size_t, size_t>& coords = enemy.getMoveManager().getCoords();
-    if (dynamic_cast<Player*>(&Game::getInstance().getGameField().getCell(
+    if (dynamic_cast<Player*>(&game_field.getCell(
        std::make_pair(coords.first + difference.first, coords.second + difference.second)).getObject())
         == nullptr) {
        return true;
@@ -162,7 +177,7 @@ bool EventManager::checkNotPlayer(Enemy& enemy, const std::pair<char, char>& dif
 
 bool EventManager::checkNotEnemy(Creature& creature, const std::pair<char, char>& difference) {
     const std::pair<size_t, size_t>& coords = creature.getMoveManager().getCoords();
-    if (dynamic_cast<Enemy*>(&Game::getInstance().getGameField().getCell(
+    if (dynamic_cast<Enemy*>(&game_field.getCell(
        std::make_pair(coords.first + difference.first, coords.second + difference.second)).getObject())
         == nullptr) {
        return true;
@@ -172,7 +187,7 @@ bool EventManager::checkNotEnemy(Creature& creature, const std::pair<char, char>
 
 bool EventManager::checkNotItem(Creature& creature, const std::pair<char, char>& difference) {
     const std::pair<size_t, size_t>& coords = creature.getMoveManager().getCoords();
-    if (dynamic_cast<Item*>(&Game::getInstance().getGameField().getCell(
+    if (dynamic_cast<Item*>(&game_field.getCell(
        std::make_pair(coords.first + difference.first, coords.second + difference.second)).getObject())
         == nullptr) {
        return true;
@@ -181,10 +196,9 @@ bool EventManager::checkNotItem(Creature& creature, const std::pair<char, char>&
 }
 
 void EventManager::isFinishCell(Player& player) {
-    Game& game = Game::getInstance();
     if (player.getMoveManager().getCoords() == 
-        game.getGameField().getFinishCoords()) {
-        game.setEnd();
+        game_field.getFinishCoords()) {
+        Game::getInstance().setEnd();
     }
 }
 
@@ -217,7 +231,10 @@ void EventManager::KeyPressed(sf::Event event) {
                 break;
             }
         }
-        move(Game::getInstance().getPlayer(), difference);
+        move(player, difference);
         enemiesMove();
     }
 }
+
+EventManager::EventManager(GameField& game_field, Player& player):
+game_field(game_field), player(player) {};

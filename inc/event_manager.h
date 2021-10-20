@@ -2,14 +2,16 @@
 #define EVENT_MANAGER_H
 
 #include <SFML/Window/Event.hpp>
-
-class Enemy;
-class Player;
-class Creature;
-class Item;
+#include "game_field.h"
+#include "player.h"
+#include "item.h"
+#include "enemy.h"
 
 class EventManager {
 private:
+	GameField& game_field;
+	Player& player;
+	
 	void pickUp(Player& player, Item& item);
 	void attack(Creature& attacker, Creature& defender);
 	void enemiesMove();
@@ -27,6 +29,7 @@ private:
 	
 public:
 	void KeyPressed(sf::Event event);
+	EventManager(GameField& game_field, Player& player);
 };
 
 #endif

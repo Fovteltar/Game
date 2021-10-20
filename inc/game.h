@@ -17,17 +17,16 @@ private:
 	bool not_ended = true;
 	Game();
 public:
+	void startGame();
 	void create();
 	Player& getPlayer();
 	void setPlayer(Player* player);
 	void setEnd();
-	bool getGameState() const;
 	static Game& getInstance();
 	GameField& getGameField();
 	Game(Game &other) = delete;
 	void operator=(const Game &) = delete;
 	~Game();
-	void startGame();
 };
 
 #endif

@@ -6,7 +6,7 @@ const size_t& Creature::getAttack() const { return this->attack; }
 
 void Creature::changeHealth(const int& difference) {
 	if (difference <= 0) {
-		if (health <= -difference) {
+		if (health <= std::abs(difference)) {
 			health = 0;
 			return;
 		}
@@ -16,7 +16,7 @@ void Creature::changeHealth(const int& difference) {
 
 void Creature::changeArmor(const int& difference) {
 	if (difference <= 0) {
-		if (armor <= -difference) {
+		if (armor <= std::abs(difference)) {
 			armor = 0;
 			return;
 		}
@@ -25,7 +25,7 @@ void Creature::changeArmor(const int& difference) {
 }
 void Creature::changeAttack(const int& difference) {
 	if (difference <= 0) {
-		if (attack <= -difference) {
+		if (attack <= std::abs(difference)) {
 			attack = 0;
 			return;
 		}
