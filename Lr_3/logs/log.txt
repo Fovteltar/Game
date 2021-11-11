@@ -1,4 +1,0 @@
-[POTION] USED!
-[PLAYER] DEF INCREASED(20 + 5 -> 25)
-[ENEMY] ATTACKED: 4 - 4 -> KILLED!
-[PLAYER] Finish reached!
