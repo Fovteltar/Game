@@ -9,13 +9,13 @@ void EnemiesSpawner::spawn() const {
 				Enemy* enemy = nullptr;
 				int chance = std::rand() % 100;
 				if (chance < 3) {
-					enemy = new ShadowWarrior({x, y});
+					enemy = new ShadowWarrior({x, y}, *game_field);
 				}
 				else if(chance < 6){
-					enemy = new KillerAnt({x, y});
+					enemy = new KillerAnt({x, y}, *game_field);
 				}
 				else if(chance < 9){
-					enemy = new Spider({x, y});
+					enemy = new Spider({x, y}, *game_field);
 				}
 				game_field->getCell({x, y}).setObject(enemy);
 			}

@@ -6,7 +6,7 @@
 class Enemy: public Creature {
 public:
 	virtual Prototype* clone() const = 0;
-	virtual const sf::Texture& getTexture() const = 0;
+	virtual void accept(Visitor& visitor) const = 0;
 };
 
 #endif

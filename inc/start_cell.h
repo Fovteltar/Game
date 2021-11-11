@@ -5,7 +5,7 @@
 
 class StartCell: public Cell {
 public:
-	const sf::Texture& getTexture() const;
 	Prototype* clone() const;
+	void accept(Visitor& visitor) const;
 };
 #endif

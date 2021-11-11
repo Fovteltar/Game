@@ -53,6 +53,18 @@ void GameFieldBuilder::buildField() {
 	}
 }
 
+void GameFieldBuilder::buildCreatures() {
+	PlayerSpawner p_spawner = PlayerSpawner(*game_field);
+    EnemiesSpawner en_spawner = EnemiesSpawner(*game_field);
+    ItemsSpawner it_spawner = ItemsSpawner(*game_field);
+    Spawner* spawner = &p_spawner;
+    spawner->spawn();
+    spawner = &en_spawner;
+    spawner->spawn();
+    spawner = &it_spawner;
+    spawner->spawn();
+}
+
 GameFieldBuilder::GameFieldBuilder(const std::pair<size_t, size_t>& field_size) {
 	reset();
 	game_field->setFieldSize(field_size);

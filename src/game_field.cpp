@@ -73,30 +73,6 @@ void GameField::changeObjectCoords(const std::pair<size_t, size_t>& old_coords,
 	}
 }
 
-void GameField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	size_t width = field_size.first;
-	size_t height = field_size.second;
-	sf::VertexArray quad(sf::Quads, 4);
-	for (size_t x = 0; x < width; x++) {
-		for (size_t y = 0; y < height; y++) {
-			quad[0].position = sf::Vector2f(64.f * y, 64.f * x);
-			quad[1].position = sf::Vector2f(64.f + 64.f * y, 64.f * x);
-			quad[2].position = sf::Vector2f(64.f + 64.f * y, 64.f + 64.f * x);
-			quad[3].position = sf::Vector2f(64.f * y, 64.f + 64.f * x);
-
-			quad[0].texCoords = sf::Vector2f(0.f, 0.f);
-			quad[1].texCoords = sf::Vector2f(64.f, 0.f);
-			quad[2].texCoords = sf::Vector2f(64.f, 64.f);
-			quad[3].texCoords = sf::Vector2f(0.f, 64.f);
-
-			target.draw(quad, &this->field[x][y]->getTexture());
-			if (&this->field[x][y]->getObject() != nullptr) {
-				target.draw(this->field[x][y]->getObject());
-			}
-		}
-	}
-}
-
 GameField::GameField(GameField &&movable_obj) {
 	this->field = std::move(movable_obj.field);
 	this->field_size = std::move(movable_obj.field_size);

@@ -1,19 +1,24 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "textures.h"
 #include <thread>
 #include <chrono>
-#include "game.h"
+
+#include "textures.h"
+#include "game_field_view.h"
 
 class Renderer {
 private:
+	bool& not_ended;
 	sf::RenderWindow* window;
+	GameFieldView* game_field_view;
+	const Textures* textures; 
 public:
-	Renderer();
+	Renderer(GameField& game_field, bool& not_ended);
 	~Renderer();
-	sf::RenderWindow& getWindow();
-	void drawFrame();
+	sf::RenderWindow& getWindow() const;
+	void drawFrame() const;
+	void checkWindowEvents(const sf::Event& event);
 };
 
 #endif

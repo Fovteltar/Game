@@ -2,15 +2,21 @@
 #define EVENT_MANAGER_H
 
 #include <SFML/Window/Event.hpp>
+#include <string>
 #include "game_field.h"
 #include "player.h"
 #include "item.h"
 #include "enemy.h"
+#include "potion.h"
+#include "logger.h"
 
 class EventManager {
 private:
 	GameField& game_field;
 	Player& player;
+	bool& not_ended;
+
+	Logger* logger;
 	
 	void pickUp(Player& player, Item& item);
 	void attack(Creature& attacker, Creature& defender);
@@ -28,8 +34,9 @@ private:
 	void isFinishCell(Player& player);
 	
 public:
-	void KeyPressed(sf::Event event);
-	EventManager(GameField& game_field, Player& player);
+	void checkGameEvents(const sf::Event& event);
+	EventManager(GameField& game_field, Player& player, bool& not_ended);
+	~EventManager();
 };
 
 #endif

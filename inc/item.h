@@ -2,6 +2,8 @@
 #define ITEM_H
 
 #include "game_object.h"
+#include <cstddef>
+#include <utility>
 
 class Item: public GameObject {
 protected:
@@ -9,8 +11,8 @@ protected:
 public:
 	const std::pair<size_t, size_t>& getCoords() const;
 	virtual Prototype* clone() const = 0;
-	virtual const sf::Texture& getTexture() const = 0;
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual ~Item(){};
+	virtual void accept(Visitor& visitor) const = 0;
 };
 
 #endif

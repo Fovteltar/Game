@@ -1,16 +1,6 @@
 #include "textures.h"
 
-Textures::Textures() {};
-
-Textures& Textures::getInstance() {
-	static Textures instance;
-    return instance;
-}
-const sf::Texture& Textures::getTexture(const std::string& texture_name) const{
-	return this->all_textures.at(texture_name);
-}
-
-void Textures::createTextures() {
+Textures::Textures() {
 	sf::Texture t;
 	std::string path = "./textures";
     for (const auto & entry : std::filesystem::recursive_directory_iterator(path)){
@@ -24,4 +14,8 @@ void Textures::createTextures() {
 			this->all_textures[leaf] = t;
 		}
     }
+};
+
+const sf::Texture& Textures::getTexture(const std::string& texture_name) const{
+	return this->all_textures.at(texture_name);
 }

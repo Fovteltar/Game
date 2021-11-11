@@ -5,11 +5,14 @@ IronskinPotion::IronskinPotion(const std::pair<size_t, size_t>& coords) {
 	this->effect = 5;
 }
 
+void IronskinPotion::use(Player& player) const {
+	player.changeArmor(effect);
+}
+
 Prototype* IronskinPotion::clone() const {
 	return new IronskinPotion(this->coords);
 }
 
-const sf::Texture& IronskinPotion::getTexture() const {
-	Textures &t = Textures::getInstance();
-	return t.getTexture("ironskin_potion.png");
+void IronskinPotion::accept(Visitor& visitor) const {
+	visitor.visitTextureName("ironskin_potion.png");
 }

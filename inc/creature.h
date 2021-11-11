@@ -2,8 +2,8 @@
 #define CREATURE_H
 
 #include <cstddef>
-#include "game_object.h"
 #include "creature_move_manager.h"
+#include "game_field.h"
 
 class Creature: public GameObject {
 protected:
@@ -11,7 +11,9 @@ protected:
 	size_t armor; //in percentage (store it from 0 to 100)
 	size_t attack;
 	CreatureMoveManager* move_manager;
+	GameField* game_field;
 public:
+	// Using in move_manager
 	virtual ~Creature();
 	const size_t& getHealth() const;
 	const size_t& getArmor() const;
@@ -24,9 +26,7 @@ public:
 	CreatureMoveManager& getMoveManager();
 
 	virtual Prototype* clone() const =0;
-
-	virtual const sf::Texture& getTexture() const = 0;
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void accept(Visitor& visitor) const = 0;
 };
 
 #endif

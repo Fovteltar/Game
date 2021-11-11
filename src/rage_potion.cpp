@@ -5,11 +5,14 @@ RagePotion::RagePotion(const std::pair<size_t, size_t>& coords) {
 	this->effect = 2;
 }
 
+void RagePotion::use(Player& player) const {
+	player.changeAttack(effect);
+}
+
 Prototype* RagePotion::clone() const {
 	return new RagePotion(this->coords);
 }
 
-const sf::Texture& RagePotion::getTexture() const {
-	Textures &t = Textures::getInstance();
-	return t.getTexture("rage_potion.png");
+void RagePotion::accept(Visitor& visitor) const {
+	visitor.visitTextureName("rage_potion.png");
 }

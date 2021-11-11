@@ -1,7 +1,6 @@
 #ifndef GAME_FIELD_H
 #define GAME_FIELD_H
 
-#include <SFML/Graphics.hpp>
 #include <cstddef>
 #include <utility>
 #include "common_cell.h"
@@ -10,13 +9,12 @@
 #include "finish_cell.h"
 #include <cstring>
 
-class GameField: public sf::Drawable {
+class GameField {
 private:
 	Cell*** field = nullptr;
 	std::pair<size_t, size_t> field_size = {0, 0};
 	std::pair<size_t, size_t> start_coords;
 	std::pair<size_t, size_t> finish_coords;
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
 	void setStartCoords(const std::pair<size_t, size_t>& start_coords);
 	const std::pair<size_t, size_t>& getStartCoords() const;

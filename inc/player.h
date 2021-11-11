@@ -3,11 +3,13 @@
 
 #include "creature.h"
 
+#include <iostream>
+
 class Player: public Creature {
 public:
-	Player(const std::pair<size_t, size_t>& coords);
+	Player(const std::pair<size_t, size_t>& coords, GameField& game_field);
 	Prototype* clone() const;
-	const sf::Texture& getTexture() const;
+	void accept(Visitor& visitor) const;
 };
 
 #endif

@@ -1,65 +1,70 @@
 #include "event_manager.h"
-#include "game.h"
+
+
+void EventManager::checkGameEvents(const sf::Event& event) {
+    if (event.type == sf::Event::KeyPressed) {
+        std::pair<char, char> difference = {0, 0};
+        switch(event.key.code) {
+            case sf::Keyboard::Right:
+            {
+                difference = std::make_pair((char)0, (char)1);
+                break;
+            }
+            case sf::Keyboard::Left:
+            {
+                difference = std::make_pair((char)0, (char)-1);
+                break;
+            }
+            case sf::Keyboard::Up:
+            {
+                difference = std::make_pair((char)-1, (char)0);
+                break;
+            }
+            case sf::Keyboard::Down:
+            {
+                difference = std::make_pair((char)1, (char)0);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+        move(player, difference);
+        enemiesMove();
+    }
+}
 
 void EventManager::pickUp(Player& player, Item& item) {
     const std::pair<size_t, size_t>& obj_coords = item.getCoords();
-    if (dynamic_cast<Potion*>(&item) != nullptr) {
-        if (dynamic_cast<HealingPotion*>(&item) != nullptr) {
-            const size_t& player_hp = 
-              player.getHealth();
-            const size_t& player_hp_dif = 
-              dynamic_cast<HealingPotion&>(item).getEffect(); 
-            std::cout << "PLAYER: HEAL(" << player_hp << 
-              " + " << player_hp_dif << " -> " <<
-              (player_hp + player_hp_dif) << ")" << std::endl;
-            player.changeHealth(player_hp_dif);
-        }
-        else if (dynamic_cast<RagePotion*>(&item) != nullptr) {
-            const size_t& player_att = 
-              player.getAttack();
-            const size_t& player_att_dif = 
-             dynamic_cast<RagePotion&>(item).getEffect();
-            std::cout << "PLAYER: ATTACK INCREASED(" << player_att << 
-              " + " << player_att_dif << " -> " <<
-              (player_att + player_att_dif) << ")" << std::endl;
-              player.changeAttack(player_att_dif);
-        }
-        else if (dynamic_cast<IronskinPotion*>(&item) != nullptr) {
-            const size_t& player_def = 
-              player.getArmor();
-            const size_t& player_def_dif = 
-             dynamic_cast<IronskinPotion&>(item).getEffect();
-            std::cout << "PLAYER: DEF INCREASED(" << player_def << 
-              " + " << player_def_dif << " -> " <<
-              (player_def + player_def_dif) << "%)" << std::endl;
-              player.changeArmor(player_def_dif);
-        }
+    Potion* potion = dynamic_cast<Potion*>(&item);
+    if (potion != nullptr) {
+        logger->handlePotion(player, *potion);
+        potion->use(player);
         game_field.getCell(obj_coords).setObject(nullptr);
         delete &item;
     }
 }
 
 void EventManager::attack(Creature& attacker, Creature& defender) {
+    logger->handleAttack(attacker, defender);
     const size_t& attacker_attack = attacker.getAttack();
 
     const size_t& defender_hp = defender.getHealth();
     const size_t& defender_armor = defender.getArmor();
 
     unsigned int hp_dif_defender = (unsigned int) (attacker_attack * (1 - (double)defender_armor / 100));
-    std::cout << "ATTACKED: " << defender_hp << " - " << hp_dif_defender << " = ";
     if (hp_dif_defender >= defender_hp) {
         game_field.getCell(
             defender.getMoveManager().getCoords()).setObject(nullptr);
         if (dynamic_cast<Player*>(&defender) != nullptr) {
-            Game::getInstance().setEnd();
+            not_ended = false;
         }
         else {
             delete &defender;
         }
-        std::cout << "KILLED!" << std::endl; 
     }
     else {
-        std::cout << defender_hp - hp_dif_defender << std::endl;
         defender.changeHealth(-hp_dif_defender);
     }
 }
@@ -198,43 +203,23 @@ bool EventManager::checkNotItem(Creature& creature, const std::pair<char, char>&
 void EventManager::isFinishCell(Player& player) {
     if (player.getMoveManager().getCoords() == 
         game_field.getFinishCoords()) {
-        Game::getInstance().setEnd();
+			not_ended = false;
+            logger->handleFinishReached(player);
     }
 }
 
-void EventManager::KeyPressed(sf::Event event) {
-	if (event.type == sf::Event::KeyPressed) {
-        std::pair<char, char> difference = {0, 0};
-        switch(event.key.code) {
-            case sf::Keyboard::Right:
-            {
-                difference = std::make_pair((char)0, (char)1);
-                break;
-            }
-            case sf::Keyboard::Left:
-            {
-                difference = std::make_pair((char)0, (char)-1);
-                break;
-            }
-            case sf::Keyboard::Up:
-            {
-                difference = std::make_pair((char)-1, (char)0);
-                break;
-            }
-            case sf::Keyboard::Down:
-            {
-                difference = std::make_pair((char)1, (char)0);
-                break;
-            }
-            default:
-            {
-                break;
+EventManager::EventManager(GameField& game_field, Player& player, bool& not_ended):
+  game_field(game_field), player(player), not_ended(not_ended) {
+    logger = new Logger(LoggerMode::BOTH);
+    for (size_t x = 0; x < game_field.getFieldSize().first; x++) {
+        for (size_t y = 0; y < game_field.getFieldSize().second; y++) {
+            if (&game_field.getCell({x, y}).getObject() != nullptr) {
+                logger->subscribeObject(&game_field.getCell({x, y}).getObject());
             }
         }
-        move(player, difference);
-        enemiesMove();
     }
 }
 
-EventManager::EventManager(GameField& game_field, Player& player):
-game_field(game_field), player(player) {};
+EventManager::~EventManager() {
+    delete logger;
+}

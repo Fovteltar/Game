@@ -5,9 +5,9 @@
 
 class Spider: public Enemy {
 public:
-	Spider(const std::pair<size_t, size_t>& coords);
+	Spider(const std::pair<size_t, size_t>& coords, GameField& game_field);
 	Prototype* clone() const;
-	const sf::Texture& getTexture() const;
+	void accept(Visitor& visitor) const;
 };
 
 #endif

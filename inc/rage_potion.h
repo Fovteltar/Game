@@ -6,8 +6,9 @@
 class RagePotion: public Potion {
 public:
 	RagePotion(const std::pair<size_t, size_t>& coords);
+	void use(Player& player) const;
 	Prototype* clone() const;
-	const sf::Texture& getTexture() const;
+	void accept(Visitor& visitor) const;
 };
 
 #endif

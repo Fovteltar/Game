@@ -36,7 +36,7 @@ directories:
 	@mkdir -p $(TARGETDIR)
 	@mkdir -p $(BUILDDIR)
 
-#Clean only Objecst
+#Clean only Objects
 clean:
 	@$(RM) -rf $(BUILDDIR)
 
