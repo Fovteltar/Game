@@ -14,6 +14,8 @@
 #include "kills_rule.h"
 #include "steps_rule.h"
 
+#include "keyboard_input.h"
+
 class EventManager {
 private:
 	GameField& game_field;
@@ -23,6 +25,8 @@ private:
 	Logger* logger;
 	RulesChecker<>* rules_checker;
 	GameStats& game_stats;
+
+	KeyboardInput* keyboard_input;
 	
 	void pickUp(Player& player, Item& item);
 	void attack(Creature& attacker, Creature& defender);

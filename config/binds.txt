@@ -1,0 +1,8 @@
+0 = Right
+3 = Left
+18 = Up
+22 = Down
+71 = Left
+72 = Right
+73 = Up
+74 = Down

@@ -4,34 +4,34 @@
 void EventManager::checkGameEvents(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed) {
         std::pair<char, char> difference = {0, 0};
-        switch(event.key.code) {
-            case sf::Keyboard::Right:
-            {
-                difference = std::make_pair((char)0, (char)1);
-                break;
+        if (keyboard_input->getAction(event.key.code) != KeyboardActions::Unknown) {
+            switch(keyboard_input->getAction(event.key.code)) {
+                case KeyboardActions::Up:
+                {
+                    difference = std::make_pair((char)-1, (char)0);
+                    break;
+                }
+                case KeyboardActions::Left:
+                {
+                    difference = std::make_pair((char)0, (char)-1);
+                    break;
+                }
+                case KeyboardActions::Down:
+                {
+                    difference = std::make_pair((char)1, (char)0);
+                    break;
+                }
+                case KeyboardActions::Right:
+                {
+                    difference = std::make_pair((char)0, (char)1);
+                    break;
+                }
+                default:
+                    break;
             }
-            case sf::Keyboard::Left:
-            {
-                difference = std::make_pair((char)0, (char)-1);
-                break;
-            }
-            case sf::Keyboard::Up:
-            {
-                difference = std::make_pair((char)-1, (char)0);
-                break;
-            }
-            case sf::Keyboard::Down:
-            {
-                difference = std::make_pair((char)1, (char)0);
-                break;
-            }
-            default:
-            {
-                break;
-            }
+            move(player, difference);
+            enemiesMove();
         }
-        move(player, difference);
-        enemiesMove();
     }
 }
 
@@ -223,9 +223,20 @@ EventManager::EventManager(GameField& game_field, Player& player, bool& not_ende
             }
         }
     }
+    keyboard_input = new KeyboardInput();
+    keyboard_input->bindKey(sf::Keyboard::Up, KeyboardActions::Up);
+    keyboard_input->bindKey(sf::Keyboard::Left, KeyboardActions::Left);
+    keyboard_input->bindKey(sf::Keyboard::Down, KeyboardActions::Down);
+    keyboard_input->bindKey(sf::Keyboard::Right, KeyboardActions::Right);
+
+    keyboard_input->bindKey(sf::Keyboard::W, KeyboardActions::Down);
+    keyboard_input->bindKey(sf::Keyboard::A, KeyboardActions::Right);
+    keyboard_input->bindKey(sf::Keyboard::S, KeyboardActions::Up);
+    keyboard_input->bindKey(sf::Keyboard::D, KeyboardActions::Left);
 }
 
 EventManager::~EventManager() {
     delete rules_checker;
     delete logger;
+    delete keyboard_input;
 }
