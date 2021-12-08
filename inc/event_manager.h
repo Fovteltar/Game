@@ -10,6 +10,10 @@
 #include "potion.h"
 #include "logger.h"
 
+#include "rules_checker.h"
+#include "kills_rule.h"
+#include "steps_rule.h"
+
 class EventManager {
 private:
 	GameField& game_field;
@@ -17,6 +21,8 @@ private:
 	bool& not_ended;
 
 	Logger* logger;
+	RulesChecker<>* rules_checker;
+	GameStats& game_stats;
 	
 	void pickUp(Player& player, Item& item);
 	void attack(Creature& attacker, Creature& defender);
@@ -35,7 +41,7 @@ private:
 	
 public:
 	void checkGameEvents(const sf::Event& event);
-	EventManager(GameField& game_field, Player& player, bool& not_ended);
+	EventManager(GameField& game_field, Player& player, bool& not_ended, GameStats& game_stats);
 	~EventManager();
 };
 

@@ -1,7 +1,10 @@
 #include "game.h"
 
 Game::Game() {
+    game_stats = new GameStats(); 
+
     not_ended = true;
+
     UserInput user_input;
     user_input.readFieldSize();
 
@@ -20,6 +23,7 @@ Game::Game() {
 
 Game::~Game() {
 	delete game_field;
+    delete game_stats;
 }
 
 Game& Game::getInstance() {
@@ -29,7 +33,7 @@ Game& Game::getInstance() {
 
 void Game::startGame() {
 	Renderer renderer(*game_field, not_ended);
-	EventManager ev_manager(*game_field, *player, not_ended);
+	EventManager ev_manager(*game_field, *player, not_ended, *game_stats);
     sf::RenderWindow& window = renderer.getWindow();
 
     sf::Event event;

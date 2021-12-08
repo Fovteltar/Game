@@ -6,11 +6,13 @@
 #include "game_field_builder.h"
 #include "renderer.h"
 #include "event_manager.h"
+#include "game_stats.h"
 
 class Game {
 private:
 	GameField* game_field;
 	Player* player;
+	GameStats* game_stats;
 	bool not_ended;
 	Game();
 public:

@@ -8,7 +8,8 @@ obj/game.o: src/game.cpp inc/game.h inc/game_field.h inc/common_cell.h \
  inc/spider.h inc/items_spawner.h inc/healing_potion.h inc/potion.h \
  inc/item.h inc/rage_potion.h inc/ironskin_potion.h inc/renderer.h \
  inc/game_field_view.h inc/event_manager.h inc/logger.h inc/operators.h \
- inc/console_wrapper.h inc/file_wrapper.h
+ inc/console_wrapper.h inc/file_wrapper.h inc/rules_checker.h inc/rule.h \
+ inc/game_stats.h inc/kills_rule.h inc/steps_rule.h
 src/game.cpp:
 inc/game.h:
 inc/game_field.h:
@@ -49,3 +50,8 @@ inc/logger.h:
 inc/operators.h:
 inc/console_wrapper.h:
 inc/file_wrapper.h:
+inc/rules_checker.h:
+inc/rule.h:
+inc/game_stats.h:
+inc/kills_rule.h:
+inc/steps_rule.h:
