@@ -61,6 +61,7 @@ void EventManager::attack(Creature& attacker, Creature& defender) {
             not_ended = false;
         }
         else {
+            game_stats.increaseKills();
             delete &defender;
         }
     }
@@ -141,6 +142,7 @@ void EventManager::move(Player& player, const std::pair<char, char>& difference)
                 pickUp(player, item);
             }
             player.getMoveManager().move(difference);
+            game_stats.increaseSteps();
             isFinishCell(player);
         }
     }
@@ -201,15 +203,18 @@ bool EventManager::checkNotItem(Creature& creature, const std::pair<char, char>&
 }
 
 void EventManager::isFinishCell(Player& player) {
-    if (player.getMoveManager().getCoords() == 
-        game_field.getFinishCoords()) {
+    if (player.getMoveManager().getCoords() == game_field.getFinishCoords()
+        && rules_checker->checkRules()) {
 			not_ended = false;
             logger->handleFinishReached(player);
+            // std::cout << "Steps = " << game_stats.getSteps() << " | " <<
+            // "Kills = " << game_stats.getKills() << std::endl;
     }
 }
 
-EventManager::EventManager(GameField& game_field, Player& player, bool& not_ended):
-  game_field(game_field), player(player), not_ended(not_ended) {
+EventManager::EventManager(GameField& game_field, Player& player, bool& not_ended, GameStats& game_stats):
+  game_field(game_field), player(player), not_ended(not_ended), game_stats(game_stats) {
+    rules_checker = (RulesChecker<>*) new RulesChecker<KillsRule<1>, StepsRule<50>>(new KillsRule<1>(game_stats), new StepsRule<50>(game_stats));
     logger = new Logger(LoggerMode::BOTH);
     for (size_t x = 0; x < game_field.getFieldSize().first; x++) {
         for (size_t y = 0; y < game_field.getFieldSize().second; y++) {
@@ -221,5 +226,6 @@ EventManager::EventManager(GameField& game_field, Player& player, bool& not_ende
 }
 
 EventManager::~EventManager() {
+    delete rules_checker;
     delete logger;
 }
