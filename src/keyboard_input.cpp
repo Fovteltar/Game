@@ -31,6 +31,11 @@ KeyboardInput::KeyboardInput() {
 }
 
 KeyboardInput::~KeyboardInput() {
+	std::map<KeyboardActions, std::string> from_action_to_string = {};
+	for (const auto& pair : from_string_to_action) {
+		from_action_to_string[pair.second] = pair.first;
+	}
+
 	std::ofstream f_write("./config/binds.txt");
 	if (f_write.is_open()) {
 		for (const auto& my_pair : keyboard) {
