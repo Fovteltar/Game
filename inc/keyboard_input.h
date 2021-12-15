@@ -19,13 +19,6 @@ const std::map<std::string, KeyboardActions> from_string_to_action = {
 	{ "Right", KeyboardActions::Right },
 };
 
-const std::map<KeyboardActions, std::string> from_action_to_string = {
-	{ KeyboardActions::Up, "Up"},
-	{ KeyboardActions::Left, "Left"},
-	{ KeyboardActions::Down, "Down"},
-	{ KeyboardActions::Right, "Right"},
-};
-
 class KeyboardInput {
 private:
 	std::map<sf::Keyboard::Key, KeyboardActions> keyboard;
