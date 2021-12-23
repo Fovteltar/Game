@@ -1,1 +1,1 @@
-valgrind --tool=memcheck --leak-check=full --track-origins=yes ./bin/program
+valgrind --tool=memcheck --leak-check=yes --show-possibly-lost=no ./bin/program

@@ -1,6 +1,7 @@
 #include "renderer.h"
 
 Renderer::Renderer(GameField& game_field, bool& not_ended): not_ended(not_ended) {
+    this->game_field = &game_field;
     textures = new Textures();
     game_field_view = new GameFieldView(game_field, *textures);
     window = new sf::RenderWindow(sf::VideoMode(768.f, 768.f), "Game");
@@ -44,6 +45,13 @@ void Renderer::checkWindowEvents(const sf::Event& event) {
 
 sf::RenderWindow& Renderer::getWindow() const {
     return *window;
+}
+
+void Renderer::recreate(GameField* new_game_field) {
+    this->game_field = nullptr;
+    this->game_field = new_game_field; 
+    delete game_field_view;
+    game_field_view = new GameFieldView(*game_field, *textures);
 }
 
 // case sf::Event::KeyPressed:

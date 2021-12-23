@@ -10,6 +10,14 @@ const size_t& GameStats::getKills() const {
 	return kills_amount;
 }
 
+void GameStats::setSteps(const size_t& steps_amount) {
+	this->steps_amount = steps_amount;
+}
+
+void GameStats::setKills(const size_t& kills_amount) {
+	this->kills_amount = kills_amount;
+}
+
 void GameStats::increaseSteps() {
 	steps_amount++;
 }

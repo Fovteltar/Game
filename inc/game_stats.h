@@ -11,6 +11,8 @@ public:
 	GameStats();
 	const size_t& getSteps() const;
 	const size_t& getKills() const;
+	void setSteps(const size_t& steps_amount);
+	void setKills(const size_t& kills_amount);
 	void increaseSteps();
 	void increaseKills();
 };

@@ -25,8 +25,6 @@ private:
 	Logger* logger;
 	RulesChecker<>* rules_checker;
 	GameStats& game_stats;
-
-	KeyboardInput* keyboard_input;
 	
 	void pickUp(Player& player, Item& item);
 	void attack(Creature& attacker, Creature& defender);
@@ -44,7 +42,7 @@ private:
 	void isFinishCell(Player& player);
 	
 public:
-	void checkGameEvents(const sf::Event& event);
+	void checkGameEvents(const KeyboardActions& action);
 	EventManager(GameField& game_field, Player& player, bool& not_ended, GameStats& game_stats);
 	~EventManager();
 };
