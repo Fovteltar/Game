@@ -6,3 +6,5 @@
 72 = Right
 73 = Up
 74 = Down
+89 = Save
+93 = Load

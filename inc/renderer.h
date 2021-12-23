@@ -6,9 +6,11 @@
 
 #include "textures.h"
 #include "game_field_view.h"
+#include "creature.h"
 
 class Renderer {
 private:
+	GameField* game_field;
 	bool& not_ended;
 	sf::RenderWindow* window;
 	GameFieldView* game_field_view;
@@ -19,6 +21,7 @@ public:
 	sf::RenderWindow& getWindow() const;
 	void drawFrame() const;
 	void checkWindowEvents(const sf::Event& event);
+	void recreate(GameField* new_game_field);
 };
 
 #endif

@@ -1,0 +1,7 @@
+[gf_size]2x2
+[kills_rule]0
+[steps_rule]0
+[finish_cell][0;0][spider][hp:5][armor:15][attack:4]
+[start_cell][0;1][player][hp:100][armor:15][attack:4]
+[common_cell][1;0][no_object]
+[common_cell][1;1][no_object]

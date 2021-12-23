@@ -10,6 +10,7 @@
 enum class KeyboardActions {
 	Unknown = -1,
 	Up, Left, Down, Right,
+	Save, Load
 };
 
 const std::map<std::string, KeyboardActions> from_string_to_action = {
@@ -17,6 +18,17 @@ const std::map<std::string, KeyboardActions> from_string_to_action = {
 	{ "Left", KeyboardActions::Left },
 	{ "Down", KeyboardActions::Down },
 	{ "Right", KeyboardActions::Right },
+	{ "Save", KeyboardActions::Save },
+	{ "Load", KeyboardActions::Load },
+};
+
+const std::map<KeyboardActions, std::string> from_action_to_string = {
+	{ KeyboardActions::Up, "Up" },
+	{ KeyboardActions::Left, "Left" },
+	{ KeyboardActions::Down, "Down" },
+	{ KeyboardActions::Right, "Right" },
+	{ KeyboardActions::Save, "Save" },
+	{ KeyboardActions::Load, "Load" },
 };
 
 class KeyboardInput {
